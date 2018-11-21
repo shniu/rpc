@@ -1,20 +1,26 @@
 package info.chaintech.rpc.java.nioserver;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Queue;
 
 /**
  * Socket acceptor
  * Created by Administrator on 2018/11/21 0021.
  */
+@Slf4j
 public class SocketAcceptor implements Runnable {
 
     private int tcpPort;
     private Queue socketQueue;
 
     private ServerSocketChannel serverSocketChannel = null;
+
+    private Queue<Socket> inboundSocketQueue = null;
 
     public SocketAcceptor(int tcpPort, Queue socketQueue) {
         this.tcpPort = tcpPort;
@@ -32,7 +38,16 @@ public class SocketAcceptor implements Runnable {
         }
 
         while (true) {
+            try {
+                SocketChannel socketChannel = serverSocketChannel.accept();
+                log.info("Socket accepted: {}", socketChannel);
 
+                // todo check the queue
+                socketQueue.add(new Socket(socketChannel));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }
