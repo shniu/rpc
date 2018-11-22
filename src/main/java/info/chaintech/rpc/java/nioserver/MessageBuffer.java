@@ -6,4 +6,9 @@ package info.chaintech.rpc.java.nioserver;
 public class MessageBuffer {
 
 
+    private Message message;
+
+    public Message getMessage() {
+        return message;
+    }
 }

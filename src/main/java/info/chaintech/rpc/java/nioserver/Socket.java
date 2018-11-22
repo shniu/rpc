@@ -12,8 +12,8 @@ public class Socket {
 
     private long socketId;
     private SocketChannel socketChannel;
-    //private IMessageReader messageReader;
-    //private MessageWriter messageWriter;
+    private IMessageReader messageReader;
+    private MessageWriter messageWriter;
 
     private boolean endOfStreamReached = false;
 
@@ -77,5 +77,21 @@ public class Socket {
 
     public void setEndOfStreamReached(boolean endOfStreamReached) {
         this.endOfStreamReached = endOfStreamReached;
+    }
+
+    public IMessageReader getMessageReader() {
+        return messageReader;
+    }
+
+    public void setMessageReader(IMessageReader messageReader) {
+        this.messageReader = messageReader;
+    }
+
+    public MessageWriter getMessageWriter() {
+        return messageWriter;
+    }
+
+    public void setMessageWriter(MessageWriter messageWriter) {
+        this.messageWriter = messageWriter;
     }
 }

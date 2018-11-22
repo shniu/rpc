@@ -20,8 +20,6 @@ public class SocketAcceptor implements Runnable {
 
     private ServerSocketChannel serverSocketChannel = null;
 
-    private Queue<Socket> inboundSocketQueue = null;
-
     public SocketAcceptor(int tcpPort, Queue socketQueue) {
         this.tcpPort = tcpPort;
         this.socketQueue = socketQueue;
@@ -43,6 +41,7 @@ public class SocketAcceptor implements Runnable {
                 log.info("Socket accepted: {}", socketChannel);
 
                 // todo check the queue
+                //noinspection unchecked
                 socketQueue.add(new Socket(socketChannel));
             } catch (IOException e) {
                 e.printStackTrace();
