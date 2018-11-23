@@ -59,6 +59,7 @@ public class SocketProcessor implements Runnable {
 
     @Override
     public void run() {
+        log.info("Start the SocketProcessor successfully, and ready to handle the connection");
         while (true) {
             try {
                 executeCycle();

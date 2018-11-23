@@ -1,5 +1,6 @@
 package info.chaintech.rpc.java.nioserver;
 
+import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -26,8 +27,8 @@ public class Server {
     /**
      * the entry to start a server
      */
-    public void start() {
-        Queue socketQueue = new ArrayBlockingQueue(1024);
+    public void start() throws IOException {
+        Queue<Socket> socketQueue = new ArrayBlockingQueue<>(1024);
 
         socketAcceptor = new SocketAcceptor(tcpPort, socketQueue);
 

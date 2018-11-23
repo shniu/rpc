@@ -31,6 +31,7 @@ public class SocketAcceptor implements Runnable {
         try {
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(tcpPort));
+            log.info("Start the SocketAcceptor successfully, and ready to accept the connection");
         } catch (IOException e) {
             e.printStackTrace();
         }

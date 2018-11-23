@@ -1,8 +1,9 @@
 package info.chaintech.rpc.java.nioserver;
 
+import info.chaintech.rpc.java.nioserver.http.HttpMessageReaderFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 
 /**
  * Start a nio server
@@ -17,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 @Slf4j
 public class ExampleMain {
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+    public static void main(String[] args) throws IOException {
 
         String httpResponse = "HTTP/1.1 200 OK\r\n" +
                 "Content-Length: 38\r\n" +
@@ -27,20 +28,18 @@ public class ExampleMain {
 
         byte[] httpResponseBytes = httpResponse.getBytes("UTF-8");
 
-        IMessageProcessor messageProcessor = new IMessageProcessor() {
-            @Override
-            public void process(Message reqMessage, WriteProxy writeProxy) {
-                log.info("Message Received from socket: ", reqMessage.getSocketId());
+        IMessageProcessor messageProcessor = (reqMessage, writeProxy) -> {
+            log.info("Message Received from socket: ", reqMessage.getSocketId());
 
-                Message respMessage = writeProxy.getMessage();
-                respMessage.setSocketId(reqMessage.getSocketId());
-                respMessage.writeToMessage(httpResponseBytes);
+            Message respMessage = writeProxy.getMessage();
+            respMessage.setSocketId(reqMessage.getSocketId());
+            respMessage.writeToMessage(httpResponseBytes);
 
-                writeProxy.enqueue(respMessage);
-            }
+            writeProxy.enqueue(respMessage);
         };
 
-        Server server = new Server(9999, null, messageProcessor);
+        Server server = new Server(9999, new HttpMessageReaderFactory(), messageProcessor);
         server.start();
+        log.info("Nio Server start success, listen on 9999");
     }
 }
