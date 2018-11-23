@@ -65,7 +65,7 @@ public class SocketProcessor implements Runnable {
             try {
                 executeCycle();
             } catch (IOException e) {
-                log.error("", e);
+                log.error(e.getMessage(), e);
                 // break;
             }
 

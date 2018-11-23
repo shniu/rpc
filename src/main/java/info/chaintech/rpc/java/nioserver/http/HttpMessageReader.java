@@ -44,12 +44,12 @@ public class HttpMessageReader implements IMessageReader {
 
         nextMessage.writeToMessage(byteBuffer);
 
-        // todo
+        // todo parse the message, 应该需要定义一下消息协议，才能知道该如何请求，如何解析，如何响应
 
-        byte[] sharedArray = nextMessage.getSharedArray();
+        /*byte[] sharedArray = nextMessage.getSharedArray();
         byte[] dest = new byte[nextMessage.getLength()];
         System.arraycopy(sharedArray, nextMessage.getOffset(), dest, 0, nextMessage.getLength());
-        log.info(new String(dest));
+        log.info(new String(dest));*/
 
         byteBuffer.clear();
     }
