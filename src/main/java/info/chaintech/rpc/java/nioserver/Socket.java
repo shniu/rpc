@@ -94,4 +94,14 @@ public class Socket {
     public void setMessageWriter(MessageWriter messageWriter) {
         this.messageWriter = messageWriter;
     }
+
+    @Override
+    public String toString() {
+        return "Socket{" +
+                "socketId=" + socketId +
+                ", messageReader=" + messageReader +
+                ", messageWriter=" + messageWriter +
+                ", endOfStreamReached=" + endOfStreamReached +
+                '}';
+    }
 }

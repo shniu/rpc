@@ -4,6 +4,7 @@ import info.chaintech.rpc.java.nioserver.IMessageReader;
 import info.chaintech.rpc.java.nioserver.Message;
 import info.chaintech.rpc.java.nioserver.MessageBuffer;
 import info.chaintech.rpc.java.nioserver.Socket;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -13,6 +14,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2018/11/22 0022.
  */
+
+@Slf4j
 public class HttpMessageReader implements IMessageReader {
 
     private MessageBuffer messageBuffer;
@@ -30,16 +33,25 @@ public class HttpMessageReader implements IMessageReader {
     }
 
     @Override
-    public void read(Socket socket, ByteBuffer readByteBuffer) throws IOException {
-        int bytesRead = socket.read(readByteBuffer);
-        readByteBuffer.flip();
+    public void read(Socket socket, ByteBuffer byteBuffer) throws IOException {
+        int bytesRead = socket.read(byteBuffer);
+        byteBuffer.flip();
 
-        if (readByteBuffer.remaining() == 0) {
-            readByteBuffer.clear();
+        if (byteBuffer.remaining() == 0) {
+            byteBuffer.clear();
             return;
         }
 
-        nextMessage.writeToMessage(readByteBuffer);
+        nextMessage.writeToMessage(byteBuffer);
+
+        // todo
+
+        byte[] sharedArray = nextMessage.getSharedArray();
+        byte[] dest = new byte[nextMessage.getLength()];
+        System.arraycopy(sharedArray, nextMessage.getOffset(), dest, 0, nextMessage.getLength());
+        log.info(new String(dest));
+
+        byteBuffer.clear();
     }
 
     @Override

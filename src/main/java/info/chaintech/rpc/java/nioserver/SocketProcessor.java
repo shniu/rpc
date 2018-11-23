@@ -60,6 +60,7 @@ public class SocketProcessor implements Runnable {
     @Override
     public void run() {
         log.info("Start the SocketProcessor successfully, and ready to handle the connection");
+
         while (true) {
             try {
                 executeCycle();
@@ -166,6 +167,7 @@ public class SocketProcessor implements Runnable {
 
     private void readFromSocket(SelectionKey key) throws IOException {
         Socket socket = (Socket) key.attachment();
+        log.info("read from: {}", socket.getSocketId());
         socket.getMessageReader().read(socket, readByteBuffer);
 
         List<Message> fullMessages = socket.getMessageReader().getMessages();
@@ -201,6 +203,8 @@ public class SocketProcessor implements Runnable {
 
             SelectionKey key = newSocket.getSocketChannel().register(readSelector, SelectionKey.OP_READ);
             key.attach(newSocket);
+
+            log.info("Take a new socket: {}", newSocket);
 
             newSocket = inboundSocketQueue.poll();
         }
