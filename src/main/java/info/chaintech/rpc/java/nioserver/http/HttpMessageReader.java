@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Http message reader
  * Created by Administrator on 2018/11/22 0022.
  */
 
@@ -28,10 +29,17 @@ public class HttpMessageReader implements IMessageReader {
 
         this.messageBuffer = readMessageBuffer;
         this.nextMessage = messageBuffer.getMessage();
-        // this.nextMessage.setMetaData(new HttpHeaders());
+        this.nextMessage.setMetaData(new HttpHeaders());
 
     }
 
+    /**
+     * parse the message
+     *
+     * @param socket     socket
+     * @param byteBuffer byteBuffer
+     * @throws IOException exp
+     */
     @Override
     public void read(Socket socket, ByteBuffer byteBuffer) throws IOException {
         int bytesRead = socket.read(byteBuffer);
@@ -44,12 +52,22 @@ public class HttpMessageReader implements IMessageReader {
 
         nextMessage.writeToMessage(byteBuffer);
 
-        // todo parse the message, 应该需要定义一下消息协议，才能知道该如何请求，如何解析，如何响应
+        int endIndex = HttpUtil.parseHttpRequest(nextMessage.getSharedArray(), nextMessage.getOffset(), nextMessage.getLength() + nextMessage.getOffset(), (HttpHeaders) nextMessage.getMetaData());
 
-        /*byte[] sharedArray = nextMessage.getSharedArray();
+        // Just for debug
+        byte[] sharedArray = nextMessage.getSharedArray();
         byte[] dest = new byte[nextMessage.getLength()];
         System.arraycopy(sharedArray, nextMessage.getOffset(), dest, 0, nextMessage.getLength());
-        log.info(new String(dest));*/
+        log.info(new String(dest));
+
+        if (endIndex != -1) {
+            Message message = messageBuffer.getMessage();
+            message.setMetaData(new HttpHeaders());
+
+            message.writePartialMessageToMessage(nextMessage, endIndex);
+            completeMessages.add(nextMessage);
+            nextMessage = message;
+        }
 
         byteBuffer.clear();
     }

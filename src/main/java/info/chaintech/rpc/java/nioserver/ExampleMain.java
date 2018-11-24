@@ -29,7 +29,7 @@ public class ExampleMain {
         byte[] httpResponseBytes = httpResponse.getBytes("UTF-8");
 
         IMessageProcessor messageProcessor = (reqMessage, writeProxy) -> {
-            log.info("Message Received from socket: ", reqMessage.getSocketId());
+            log.info("Message Received from socket: {}", reqMessage.getSocketId());
 
             Message respMessage = writeProxy.getMessage();
             respMessage.setSocketId(reqMessage.getSocketId());

@@ -3,20 +3,25 @@ package info.chaintech.rpc.java.nioserver;
 import java.util.Queue;
 
 /**
+ *
  * Created by Administrator on 2018/11/22 0022.
  */
 public class WriteProxy {
-    private Message message;
+    private MessageBuffer messageBuffer = null;
+    private Queue writeQueue = null;
 
-    public WriteProxy(MessageBuffer writeMessageBuffer, Queue<Message> outboundMessageQueue) {
 
+    public WriteProxy(MessageBuffer messageBuffer, Queue<Message> writeQueue) {
+        this.messageBuffer = messageBuffer;
+        this.writeQueue = writeQueue;
     }
 
     public Message getMessage() {
-        return message;
+        return messageBuffer.getMessage();
     }
 
-    public void enqueue(Message respMessage) {
-
+    @SuppressWarnings("unchecked")
+    public boolean enqueue(Message message) {
+        return writeQueue.offer(message);
     }
 }

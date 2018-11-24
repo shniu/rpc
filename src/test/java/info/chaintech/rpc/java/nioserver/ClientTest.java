@@ -1,5 +1,6 @@
 package info.chaintech.rpc.java.nioserver;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.nio.channels.SocketChannel;
 /**
  * Created by Administrator on 2018/11/23 0023.
  */
+@Slf4j
 public class ClientTest {
 
     @Test
@@ -20,13 +22,22 @@ public class ClientTest {
         InetSocketAddress serverAddr = new InetSocketAddress("localhost", 9999);
         SocketChannel client = SocketChannel.open(serverAddr);
 
-        byte[] message = "Google".getBytes();
-        ByteBuffer byteBuffer = ByteBuffer.wrap(message);
-        client.write(byteBuffer);
-        byteBuffer.clear();
+        String requestMessage = "GET /hello HTTP/1.1\r\n" +
+                "Content-Type: text/html\r\n" +
+                "Content-Length: 6\r\n\r\nGoogle";
 
-        Thread.sleep(100000);
+        byte[] message = requestMessage.getBytes();
+        ByteBuffer writeBuffer = ByteBuffer.wrap(message);
+        client.write(writeBuffer);
+        writeBuffer.clear();
 
+        ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+        client.read(readBuffer);
+        String response = new String(readBuffer.array()).trim();
+        log.info("Response: {}", response);
+        readBuffer.clear();
+
+        client.close();
     }
 
     public void a() throws IOException {
