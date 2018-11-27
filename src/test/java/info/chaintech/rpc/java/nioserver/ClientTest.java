@@ -49,4 +49,13 @@ public class ClientTest {
         SelectionKey key1 = socketChannel.register(selector, SelectionKey.OP_WRITE);
     }
 
+    @Test
+    public void testBinary() {
+        int i = -1 & 0x3f;
+        log.info(String.valueOf(i));
+
+        log.info(Integer.toBinaryString(-1));
+        log.info(Integer.toBinaryString(0x3f));
+    }
+
 }
