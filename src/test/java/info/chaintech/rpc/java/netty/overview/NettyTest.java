@@ -1,9 +1,6 @@
 package info.chaintech.rpc.java.netty.overview;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.buffer.UnpooledHeapByteBuf;
+import io.netty.buffer.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +36,8 @@ public class NettyTest {
 
         UnpooledByteBufAllocator unpooledByteBufAllocator = new UnpooledByteBufAllocator(true);
         ByteBuf directBuffer = unpooledByteBufAllocator.directBuffer();
+
+        PooledByteBufAllocator pooledByteBufAllocator;
     }
 
 }
