@@ -6,7 +6,7 @@ import java.net.URI;
 /**
  * RPC 框架对外提供的服务接口
  */
-public interface RpcAccessPoint extends Cloneable {
+public interface RpcAccessPoint extends Closeable {
 
     /**
      * 客户端获取远程服务的引用
