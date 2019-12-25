@@ -11,6 +11,12 @@
 
     <modules>
         <module>sample</module>
+
+        <module>client</module>
+        <module>server</module>
+        <module>rpc-api</module>
+        <module>hello-service-api</module>
+        <module>rpc-netty</module>
     </modules>
 
     <dependencies>
