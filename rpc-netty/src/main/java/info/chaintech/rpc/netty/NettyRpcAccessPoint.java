@@ -1,9 +1,9 @@
 package info.chaintech.rpc.netty;
 
-import info.chaintech.rpc.api.NamingService;
 import info.chaintech.rpc.api.RpcAccessPoint;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.URI;
 
 public class NettyRpcAccessPoint implements RpcAccessPoint {
@@ -18,12 +18,12 @@ public class NettyRpcAccessPoint implements RpcAccessPoint {
     }
 
     @Override
-    public NamingService getNameService(URI nameServiceUri) {
+    public Closeable startServer() throws Exception {
         return null;
     }
 
     @Override
-    public Closeable startServer() throws Exception {
-        return null;
+    public void close() throws IOException {
+
     }
 }

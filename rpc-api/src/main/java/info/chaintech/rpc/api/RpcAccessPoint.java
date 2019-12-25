@@ -1,7 +1,10 @@
 package info.chaintech.rpc.api;
 
+import info.chaintech.rpc.api.spi.ServiceSupport;
+
 import java.io.Closeable;
 import java.net.URI;
+import java.util.Collection;
 
 /**
  * RPC 框架对外提供的服务接口
@@ -34,7 +37,17 @@ public interface RpcAccessPoint extends Closeable {
      * @param nameServiceUri 注册中心 URI
      * @return 注册中心引用
      */
-    NamingService getNameService(URI nameServiceUri);
+    default NamingService getNameService(URI nameServiceUri) {
+        Collection<NamingService> namingServices = ServiceSupport.loadAll(NamingService.class);
+        for (NamingService namingService : namingServices) {
+            if(namingService.supportedSchemes().contains(nameServiceUri.getScheme())) {
+                namingService.connect(nameServiceUri);
+                return namingService;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * 服务端启动 RPC 服务，监听端口，开始提供远程服务

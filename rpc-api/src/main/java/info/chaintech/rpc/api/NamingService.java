@@ -2,6 +2,7 @@ package info.chaintech.rpc.api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 
 /**
  * 注册中心接口
@@ -31,4 +32,9 @@ public interface NamingService {
      * @throws IOException IO 异常
      */
     URI lookupService(String serviceName) throws IOException;
+
+    /**
+     * 所有支持的协议
+     */
+    Collection<String> supportedSchemes();
 }

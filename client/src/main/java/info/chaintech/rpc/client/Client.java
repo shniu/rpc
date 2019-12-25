@@ -25,10 +25,9 @@ public class Client {
 
         log.info("启动客户端程序");
         String name = "Master";
-        RpcAccessPoint rpcAccessPoint;
-        try {
-            // 加载 RPC 框架的访问点
-            rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class);
+
+        // 加载 RPC 框架的访问点
+        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class)) {
             // 找到注册中心
             NamingService namingService = rpcAccessPoint.getNameService(file.toURI());
             assert namingService != null;
