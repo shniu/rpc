@@ -76,7 +76,7 @@ public class LocalFileNamingService implements NamingService {
     @Override
     public URI lookupService(String serviceName) throws IOException {
         Metadata metadata;
-        try (RandomAccessFile raf = new RandomAccessFile(file, "r");
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw");
              FileChannel fileChannel = raf.getChannel()) {
             FileLock lock = fileChannel.lock();
 
