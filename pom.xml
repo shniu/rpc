@@ -19,6 +19,10 @@
         <module>rpc-netty</module>
     </modules>
 
+    <properties>
+        <com.itranswarp.compiler.version>1.0</com.itranswarp.compiler.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -45,6 +49,12 @@
             <artifactId>lombok</artifactId>
             <version>1.16.22</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itranswarp</groupId>
+            <artifactId>compiler</artifactId>
+            <version>${com.itranswarp.compiler.version}</version>
         </dependency>
 
         <dependency>

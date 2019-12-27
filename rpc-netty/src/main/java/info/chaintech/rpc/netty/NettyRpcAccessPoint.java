@@ -19,6 +19,7 @@ public class NettyRpcAccessPoint implements RpcAccessPoint {
 
     @Override
     public Closeable startServer() throws Exception {
+
         return null;
     }
 
