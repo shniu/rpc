@@ -23,6 +23,14 @@ public class InFlightRequests implements Closeable {
         }
     }
 
+    public ResponseFuture remove(int requestId) {
+        ResponseFuture responseFuture = futureMap.remove(requestId);
+        if (responseFuture != null) {
+            semaphore.release();
+        }
+        return responseFuture;
+    }
+
     @Override
     public void close() {
 

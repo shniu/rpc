@@ -1,12 +1,22 @@
 package info.chaintech.rpc.netty;
 
 import info.chaintech.rpc.api.RpcAccessPoint;
+import info.chaintech.rpc.api.spi.ServiceSupport;
+import info.chaintech.rpc.netty.client.StubFactory;
+import info.chaintech.rpc.netty.transport.RequestHandlerRegistry;
+import info.chaintech.rpc.netty.transport.TransportClient;
+import info.chaintech.rpc.netty.transport.TransportServer;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.URI;
 
 public class NettyRpcAccessPoint implements RpcAccessPoint {
+    private TransportServer server;
+    private TransportClient client = ServiceSupport.load(TransportClient.class);
+    private StubFactory stubFactory = ServiceSupport.load(StubFactory.class);
+
+    private final int port = 9999;
+
     @Override
     public <T> T getRemoteService(URI uri, Class<T> serviceClass) {
         return null;
@@ -18,13 +28,24 @@ public class NettyRpcAccessPoint implements RpcAccessPoint {
     }
 
     @Override
-    public Closeable startServer() throws Exception {
+    public synchronized Closeable startServer() throws Exception {
+        if (server == null) {
+            server = ServiceSupport.load(TransportServer.class);
+            server.start(RequestHandlerRegistry.getInstance(), port);
+        }
 
-        return null;
+        return () -> {
+            if (server != null) {
+                server.stop();
+            }
+        };
     }
 
     @Override
-    public void close() throws IOException {
-
+    public void close() {
+        if (server != null) {
+            server.stop();
+        }
+        client.close();
     }
 }

@@ -1,1 +1,2 @@
 info.chaintech.rpc.netty.serialize.impl.StringSerializer
+info.chaintech.rpc.netty.serialize.impl.MetadataSerializer
